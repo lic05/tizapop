@@ -1,0 +1,61 @@
+TIZAPOP · VERSIÓN GRATIS + PLUS (SUSCRIPCIÓN MENSUAL CON MERCADO PAGO)
+=====================================================================
+
+QUÉ HAY EN ESTA CARPETA
+- index.html ............ Tizapop (versión gratis con candados ★ Plus)
+- gracias.html .......... Página a la que regresa la clienta al suscribirse
+- netlify/functions/ .... Funciones: abrir tu link de suscripción y revisar suscripciones/códigos
+- netlify.toml .......... Configuración para Netlify (no la cambies)
+
+CÓMO FUNCIONA
+1. La maestra toca "Suscribirme a Tizapop Plus" y se suscribe en Mercado Pago.
+2. Mercado Pago la regresa a gracias.html: se revisa la suscripción y se desbloquea todo.
+3. Recibe un código (TZ-...) para activar Plus en otro celular o computadora.
+4. Cada 3 días la página revisa sola que la suscripción siga activa.
+   Si la cancela o deja de pagar, Plus se vuelve a bloquear.
+
+PASO 1 · Crea tu plan en Mercado Pago
+- Entra a tu cuenta de Mercado Pago (computadora) > menú izquierdo > "Planes de suscripción".
+- "Crear nuevo plan": Nombre "Tizapop Plus", Precio 99.99, Frecuencia: Mensual.
+- "Más opciones" > URL de redireccionamiento: https://TU-SITIO/gracias.html
+  (si aún no tienes dominio, usa la dirección que te da Netlify, ej. https://tizapop.netlify.app/gracias.html)
+- "Crear y compartir" > "Copiar link". Guárdalo.
+- El link se ve así: ...preapproval_plan_id=XXXXXXXX  ← ese XXXXXXXX es tu ID del plan.
+
+PASO 2 · Tu Access Token de Mercado Pago
+- Entra a Mercado Pago Developers > "Tus integraciones" > crea una aplicación.
+- En "Credenciales de producción" copia el ACCESS TOKEN (empieza con APP_USR-).
+- NO lo compartas con nadie ni lo pegues en un chat. Solo va en Netlify.
+
+PASO 3 · Sube la carpeta a GitHub (gratis)
+- Crea cuenta en github.com y un repositorio nuevo (ej. "tizapop").
+- "Add file" > "Upload files" y sube TODO lo de esta carpeta, incluida la carpeta netlify.
+
+PASO 4 · Publica en Netlify (gratis)
+- Crea cuenta en netlify.com entrando con GitHub.
+- "Add new project" > "Import an existing project" > GitHub > elige "tizapop" > Deploy.
+- Importante: usa GitHub, no "arrastrar y soltar"; así funcionan las funciones.
+
+PASO 5 · Variables secretas (Netlify > Project configuration > Environment variables)
+- MP_ACCESS_TOKEN = tu Access Token (paso 2)
+- MP_PLAN_LINK    = el link de tu plan (paso 1)
+- MP_PLAN_ID      = el ID del plan (lo que va después de preapproval_plan_id=)
+- TZ_SECRETO      = una frase larga que inventes. ¡No la cambies después!
+- Luego: "Deploys" > "Trigger deploy".
+
+PASO 6 · Dominio (opcional)
+- Netlify > "Domain management" para comprar o conectar tizapop.com.mx.
+- Si cambias de dirección, actualiza la URL de redireccionamiento del plan (paso 1).
+
+PASO 7 · Prueba
+- Suscríbete tú con tu tarjeta. Debes regresar a gracias.html con tu código.
+- Luego cancela la suscripción de prueba en Mercado Pago > Suscripciones.
+  (Ojo: al cancelarla, tu código también deja de funcionar.)
+
+SI ALGO FALLA EN EL REGRESO
+- Si gracias.html te pide tu correo, escribe el de tu cuenta de Mercado Pago:
+  busca una suscripción activa de las últimas 48 horas y te da tu código.
+
+¿QUIERES CAMBIAR EL PRECIO QUE SE VE EN LA PÁGINA ($99.99 al mes) O PONER UN CORREO DE CONTACTO?
+El precio real lo cobra tu plan de Mercado Pago. Para que la página muestre el mismo,
+pídeselo a Claude: cambia una línea en index.html y lo vuelves a subir.
