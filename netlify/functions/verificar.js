@@ -18,14 +18,20 @@ let MOTIVO = "";
 async function suscripcion(id) { const r = await MP("/preapproval/" + encodeURIComponent(id)); if (!r.ok) { MOTIVO = "mercadopago_" + r.status; console.log("MP respondió", r.status, "para", id); return null; } const s = await r.json(); if (!delPlan(s)) { MOTIVO = "otro_plan"; console.log("Suscripción de otro plan:", s.preapproval_plan_id, "≠", process.env.MP_PLAN_ID); return null; } return s; }
 // Para códigos viejos "X...": busca entre las suscripciones del plan la que coincide sin importar mayúsculas.
 async function suscripcionVieja(idMin) {
-  for (let offset = 0; offset < 1000; offset += 100) {
-    const params = new URLSearchParams({ limit: "100", offset: String(offset) });
-    if (process.env.MP_PLAN_ID) params.set("preapproval_plan_id", process.env.MP_PLAN_ID);
-    const r = await MP("/preapproval/search?" + params); if (!r.ok) { MOTIVO = "busqueda_" + r.status; return null; }
-    const res = (await r.json()).results || [];
-    const s = res.find(x => String(x.id).toLowerCase() === idMin && delPlan(x)); if (s) return s;
-    if (res.length < 100) break;
+  let vistos = 0;
+  for (const status of ["authorized", ""]) {
+    for (let offset = 0; offset < 500; offset += 50) {
+      const params = new URLSearchParams({ limit: "50", offset: String(offset) });
+      if (status) params.set("status", status);
+      if (process.env.MP_PLAN_ID) params.set("preapproval_plan_id", process.env.MP_PLAN_ID);
+      const r = await MP("/preapproval/search?" + params);
+      if (!r.ok) { MOTIVO = "busqueda_" + r.status + "_" + (await r.text()).slice(0, 120); return null; }
+      const res = (await r.json()).results || []; vistos += res.length;
+      const s = res.find(x => String(x.id).toLowerCase() === idMin && delPlan(x)); if (s) return s;
+      if (res.length < 50) break;
+    }
   }
+  MOTIVO = "no_esta_entre_" + vistos;
   return null;
 }
 
@@ -40,7 +46,7 @@ exports.handler = async event => {
       if (firma(m[1]) !== m[2]) return json({ ok: false, motivo: "firma" });
       let s = await suscripcion(dec(m[1]));
       if (!s && m[1].startsWith("X")) s = await suscripcionVieja(dec(m[1]));
-      if (!s) return json({ ok: false, motivo: MOTIVO });
+      if (!s) return json({ ok: false, motivo: MOTIVO, v: 3 });
       return s.status === "authorized" ? json({ ok: true }) : json({ ok: false, inactive: true, status: s.status });
     }
     // 2) Regreso desde Mercado Pago con el número de suscripción
