@@ -1,8 +1,23 @@
-TIZAPOP · VERSIÓN 3 (PLUS MENSUAL + PLUS ANUAL + REGALOS CON MERCADO PAGO)
-==========================================================================
+TIZAPOP · VERSIÓN 4 (NUEVO: MÁQUINA "ARMA TU CLASE EN UN GIRO")
+================================================================
+
+QUÉ HAY DE NUEVO EN LA VERSIÓN 4
+- Máquina "Arma tu clase en un giro": la maestra elige grado y tema (o "Sorpréndeme"),
+  jala la palanca y le salen 3 hojas del mismo tema: Inicio, Desarrollo y Cierre.
+- Gratis: 1 giro al día. Con Plus: giros ilimitados y el botón "Otra" para cambiar
+  solo una parte de la clase.
+- Cada hoja se abre tocándola, y "Descargar paquete" baja las 3 en un solo PDF.
+- Es un juego: sonidos (con botón para silenciar), rodillos con dibujitos que giran,
+  carita que habla y reacciona, palanca que se puede picar, luces y festejo al final.
+- Está en el inicio (banda "Arma tu clase en un giro") y en el menú.
+- Solo cambió index.html. Mercado Pago, Netlify y las funciones siguen igual.
+  Para subirla: en GitHub reemplaza index.html (y LEEME.txt) y listo.
+
+(Lo de abajo es de la versión 3 y sigue igual.)
+
 
 QUÉ HAY EN ESTA CARPETA
-- index.html ............ Tizapop versión 3
+- index.html ............ Tizapop versión 4
 - gracias.html .......... Página a la que regresa la clienta al suscribirse (sin cambios)
 - netlify/functions/
     pagar.js ............ Manda al plan mensual o al plan anual de Mercado Pago
